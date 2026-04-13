@@ -19,7 +19,7 @@ import { TreinoModule } from './treinos/treinos.module';
       host: 'localhost',
       port: 3306,
       username: 'root', // seu usuário aqui
-      password: 'root', // sua senha aqui
+      password: '110294', // sua senha aqui
       database: 'db_vittafit',
       entities: [Treinos, Usuario, Dieta, Objetivos],
       synchronize: true

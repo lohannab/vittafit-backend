@@ -19,7 +19,7 @@ export class DietaService {
   async findById(id: number): Promise<Dieta> {
     const dieta = await this.dietaRepository.findOne({
       where: { id },
-      relation: { usuario: true }
+      relations: { usuario: true }
     });
 
     if (!dieta) {

@@ -1,15 +1,15 @@
 import { Controller, Get, Post, Body, Param, Put, Delete } from "@nestjs/common";
 import { TreinoService } from "../service/treinos.service";
-import { Treino } from "../entities/treinos.entity";
+import { Treinos } from "../entities/treinos.entity";
 
 
-@Controller("treinos")
+@Controller("/treinos")
 export class TreinoController {
 
     constructor(private readonly treinoService: TreinoService) {}
 
     @Post()
-    create(@Body() data: Partial<Treino>) {
+    create(@Body() data: Partial<Treinos>) {
         return this.treinoService.create(data);
     }
 
@@ -24,7 +24,7 @@ export class TreinoController {
     }
 
     @Put(":id")
-    update(@Param("id") id: number, @Body() data: Partial<Treino>) {
+    update(@Param("id") id: number, @Body() data: Partial<Treinos>) {
         return this.treinoService.update(Number(id), data);
     }
 

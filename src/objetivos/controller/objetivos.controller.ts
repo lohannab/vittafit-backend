@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPip
 import { ObjetivosService } from "../service/objetivos.service";
 import { Objetivos } from "../entities/objetivos.entity";
 
-@Controller("/Objetivos")
+@Controller("/objetivos")
 export class ObjetivosController {
 
     constructor(private readonly objetivosService: ObjetivosService) {}
