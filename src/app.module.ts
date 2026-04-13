@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Treino } from './treinos/entities/treinos.entity';
+import { Treinos } from './treinos/entities/treinos.entity';
 import { Usuario } from './usuarios/entities/usuarios.entity';
 import { Dieta } from './dieta/entities/dieta.entity';
 import { Objetivos } from './objetivos/entities/objetivos.entity';
@@ -21,7 +21,7 @@ import { TreinoModule } from './treinos/treinos.module';
       username: 'root', // seu usuário aqui
       password: 'root', // sua senha aqui
       database: 'db_vittafit',
-      entities: [Treino, Usuario, Dieta, Objetivos],
+      entities: [Treinos, Usuario, Dieta, Objetivos],
       synchronize: true
     }),
 

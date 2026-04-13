@@ -2,7 +2,8 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { DeleteResult, ILike, Repository } from "typeorm";
 import { Dieta } from "../entities/dieta.entity";
-import { Usuario } from "../entities/usuario.entity";
+import { Usuario } from "../../usuarios/entities/usuarios.entity";
+
 
 @Injectable()
 export class DietaService {
@@ -18,7 +19,7 @@ export class DietaService {
   async findById(id: number): Promise<Dieta> {
     const dieta = await this.dietaRepository.findOne({
       where: { id },
-      relations: { usuario: true }
+      relation: { usuario: true }
     });
 
     if (!dieta) {
