@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Usuario } from "../../usuarios/entities/usuarios.entity";
 
 @Entity({ name: "tb_treinos" })
 export class Treino {
@@ -18,4 +19,6 @@ export class Treino {
     @Column()
     intensidade!: string;
 
+    @ManyToOne(() => Usuario, (usuario) => usuario.objetivos) // 
+    usuario!: Usuario;  // relacionamento com o usuário
 }

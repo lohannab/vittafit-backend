@@ -1,5 +1,6 @@
 import { IsNotEmpty } from "class-validator";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Usuario } from "../../usuarios/entities/usuarios.entity";
 
 @Entity({name: "tb_objetivos"})
 export class Objetivos {
@@ -23,6 +24,6 @@ export class Objetivos {
     @Column({ type: "date" }) 
     data_limite!: Date; // data limite do projeto
 
-    //@ManyToOne(() => Usuario, (usuario) => usuario.objetivos) // 
-    //usuario!: Usuario;  // relacionamento com o usuário
+    @ManyToOne(() => Usuario, (usuario) => usuario.objetivos) // 
+    usuario!: Usuario;  // relacionamento com o usuário
     }
