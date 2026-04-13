@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Treino } from './treinos/entities/treinos.entity';
+import { TreinoModule } from './treinos/treinos.module';
+
 
 @Module({
   imports: [
@@ -11,9 +12,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       port: 3306,
       username: 'root', // seu usuário aqui
       password: 'root', // sua senha aqui
-      entities: [],
+      database: 'db_vittafit',
+      entities: [Treino],
       synchronize: true
     }),
+    TreinoModule
   ],
 })
 export class AppModule { }
