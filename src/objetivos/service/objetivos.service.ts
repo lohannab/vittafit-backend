@@ -20,7 +20,7 @@ export class ObjetivosService {
     async findById(id: number): Promise<Objetivos | null> {
         return this.objetivosRepository.findOne({
         where: { id },
-        relations: ["usuario"]
+        relations: ["usuarios"]
         });
     }
 

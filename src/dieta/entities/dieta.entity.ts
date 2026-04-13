@@ -8,9 +8,8 @@ export class Dieta {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @IsNotEmpty()
-    @Column({ type: "decimal", precision: 5, scale: 2 })
-    imc!: number;
+    @Column({ type: "decimal", precision: 5, scale: 2, nullable: true })
+    imc?: number;
 
     @IsNotEmpty()
     @Column()
