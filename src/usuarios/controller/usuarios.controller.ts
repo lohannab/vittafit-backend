@@ -32,9 +32,10 @@ export class UsuarioController{
     }
 
     @Delete('/:id')
-    @HttpCode(HttpStatus.OK)
-    async delete(@Param('id', ParseIntPipe) id: number): Promise<void>{
-        return this.usuarioService.delete(id)
+    @HttpCode(HttpStatus.NO_CONTENT)
+    delete(@Param('id', ParseIntPipe) id: number){
+        return this.usuarioService.delete(id);
     }
+    
  
 }

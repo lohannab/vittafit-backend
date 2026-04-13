@@ -33,8 +33,9 @@ export class Usuario {
     @IsNotEmpty()
     @Column('decimal', { precision: 10, scale: 2 })
     peso!: number
+
+    
    
-    @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
     imc!: number;
  
     @OneToMany(() => Objetivos, (objetivos) => objetivos.usuario)

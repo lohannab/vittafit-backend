@@ -25,7 +25,7 @@ export class DietaController {
         return this.dietaService.findAllByDescricao(descricao);
     }
 
-    @Post()
+    @Post('/cadastrar')
     @HttpCode(HttpStatus.OK)
     create(@Body() dieta: Dieta): Promise<Dieta> {
         return this.dietaService.create(dieta);

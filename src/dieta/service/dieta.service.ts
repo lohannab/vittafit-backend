@@ -7,6 +7,7 @@ import { Usuario } from "../../usuarios/entities/usuarios.entity";
 
 @Injectable()
 export class DietaService {
+  usuarioService: any;
 
   constructor(
     @InjectRepository(Dieta)
@@ -44,25 +45,31 @@ export class DietaService {
     });
   }
 
-  async create(dados: any): Promise<Dieta> {
+  async create(dieta: Dieta): Promise<Dieta> {
+        const buscaDieta = await this.findById(dieta.id);
 
-    const usuario = await this.usuarioRepository.findOne({
-      where: { id: dados.usuarioId }
-    });
+      if (buscaDieta)
+        throw new HttpException("A dieta já existe!", HttpStatus.BAD_REQUEST);     
 
-    if (!usuario) {
-      throw new HttpException("Usuário não encontrado", HttpStatus.NOT_FOUND);
-    }
 
-    const dieta = this.dietaRepository.create({
-      tipo: dados.tipo,
-      descricao: dados.descricao,
-      data: dados.data,
-      imc: usuario.imc,
-      usuario: usuario
-    });
+      if (!dieta.usuario || !dieta.usuario.id) {
+          throw new HttpException("ID do Usuário é obrigatório", HttpStatus.BAD_REQUEST);
+      }
 
-    return this.dietaRepository.save(dieta);
+      const usuario = await this.usuarioRepository.findOne({
+          where: { id: dieta.usuario.id }
+      });
+
+      
+
+      if (!usuario) {
+          throw new HttpException("Usuário não encontrado", HttpStatus.NOT_FOUND);
+      }
+
+
+      dieta.imc = usuario.imc;
+
+      return await this.dietaRepository.save(dieta);
   }
 
   async update(id: number, dados: any): Promise<Dieta> {

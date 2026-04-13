@@ -31,14 +31,6 @@ export class UsuarioService {
         return usuario;
     }
 
-    async delete(id: number): Promise<void> {
-        const usuario = await this.findById(id);
-        await this.usuarioRepository.remove(usuario);
-    }
-
-    // =========================
-    // 🧠 IMC LOGIC
-    // =========================
 
     private calcularIMC(peso: number, altura: number): number {
         return peso / (altura * altura);
@@ -54,38 +46,43 @@ export class UsuarioService {
     }
 
     async create(usuario: Usuario): Promise<any> {
-    const buscaUsuario = await this.findByUsuario(usuario.usuario);
+        const buscaUsuario = await this.findByUsuario(usuario.usuario);
 
-    if (buscaUsuario)
-        throw new HttpException("O Usuario já existe!", HttpStatus.BAD_REQUEST);
+        if (buscaUsuario)
+            throw new HttpException("O Usuario já existe!", HttpStatus.BAD_REQUEST);
 
-    const imcCalculado = this.calcularIMC(usuario.peso, usuario.altura);
-    usuario.imc = Number(imcCalculado.toFixed(2));
+        const savedUser = await this.usuarioRepository.save(usuario);
 
-    const savedUser = await this.usuarioRepository.save(usuario);
+        const imc = this.calcularIMC(savedUser.peso, savedUser.altura);
+        const classificacao = this.classificarIMC(imc);
 
-    const classificacao = this.classificarIMC(savedUser.imc);
-
-    return {
-        usuario: savedUser,
-        imc: savedUser.imc,
-        classificacao
-    };
-}
-
-    async update(usuario: Usuario): Promise<Usuario> {
-    const buscaUsuario = await this.findById(usuario.id);
-
-    const emailExistente = await this.findByUsuario(usuario.usuario);
-    if (emailExistente && emailExistente.id !== usuario.id)
-        throw new HttpException('Usuário (e-mail) já Cadastrado!', HttpStatus.BAD_REQUEST);
-
-    if (usuario.peso && usuario.altura) {
-        const imcCalculado = this.calcularIMC(usuario.peso, usuario.altura);
-        usuario.imc = Number(imcCalculado.toFixed(2));
+        return {
+            usuario: savedUser,
+            imc: Number(imc.toFixed(2)),
+            classificacao
+        };
     }
 
-    const usuarioAtualizado = this.usuarioRepository.merge(buscaUsuario, usuario);
-    return await this.usuarioRepository.save(usuarioAtualizado);
+    async update(usuario: Usuario): Promise<Usuario> {
+    
+    if (!usuario.id) {
+        throw new HttpException('O ID do usuário é obrigatório para atualização!', HttpStatus.BAD_REQUEST);
+    }
+
+    await this.findById(usuario.id);
+
+    const buscaUsuario = await this.findByUsuario(usuario.usuario);
+
+    if (buscaUsuario && buscaUsuario.id !== usuario.id)
+        throw new HttpException('Usuário (e-mail) já Cadastrado!', HttpStatus.BAD_REQUEST);
+
+    return await this.usuarioRepository.save(usuario);
+    }
+
+    async delete(id: number): Promise<string> {
+        await this.findById(id);
+        await this.usuarioRepository.delete(id);
+
+        return `O usuário com o ID ${id} foi deletado com sucesso!`; // lembrar dessa jossa aparecer no insomnia
     }
 }
