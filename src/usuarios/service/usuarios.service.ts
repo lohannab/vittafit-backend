@@ -54,22 +54,24 @@ export class UsuarioService {
     }
 
     async create(usuario: Usuario): Promise<any> {
-        const buscaUsuario = await this.findByUsuario(usuario.usuario);
+    const buscaUsuario = await this.findByUsuario(usuario.usuario);
 
-        if (buscaUsuario)
-            throw new HttpException("O Usuario já existe!", HttpStatus.BAD_REQUEST);
+    if (buscaUsuario)
+        throw new HttpException("O Usuario já existe!", HttpStatus.BAD_REQUEST);
 
-        const savedUser = await this.usuarioRepository.save(usuario);
+    const imcCalculado = this.calcularIMC(usuario.peso, usuario.altura);
+    usuario.imc = Number(imcCalculado.toFixed(2));
 
-        const imc = this.calcularIMC(savedUser.peso, savedUser.altura);
-        const classificacao = this.classificarIMC(imc);
+    const savedUser = await this.usuarioRepository.save(usuario);
 
-        return {
-            usuario: savedUser,
-            imc: Number(imc.toFixed(2)),
-            classificacao
-        };
-    }
+    const classificacao = this.classificarIMC(savedUser.imc);
+
+    return {
+        usuario: savedUser,
+        imc: savedUser.imc,
+        classificacao
+    };
+}
 
     async update(usuario: Usuario): Promise<Usuario> {
     const buscaUsuario = await this.findById(usuario.id);
