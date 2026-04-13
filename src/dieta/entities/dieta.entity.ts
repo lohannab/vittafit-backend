@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, UpdateDateColumn } from "typeorm";
-
 import { IsNotEmpty } from "class-validator";
 import { Usuario } from "../../usuarios/entities/usuarios.entity";
 
