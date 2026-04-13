@@ -64,13 +64,25 @@ export class UsuarioService {
     }
 
     async update(usuario: Usuario): Promise<Usuario> {
-        await this.findById(usuario.id);
+    
+    if (!usuario.id) {
+        throw new HttpException('O ID do usuário é obrigatório para atualização!', HttpStatus.BAD_REQUEST);
+    }
 
-        const buscaUsuario = await this.findByUsuario(usuario.usuario);
+    await this.findById(usuario.id);
 
-        if (buscaUsuario && buscaUsuario.id !== usuario.id)
-            throw new HttpException('Usuário (e-mail) já Cadastrado!', HttpStatus.BAD_REQUEST);
+    const buscaUsuario = await this.findByUsuario(usuario.usuario);
 
-        return await this.usuarioRepository.save(usuario);
+    if (buscaUsuario && buscaUsuario.id !== usuario.id)
+        throw new HttpException('Usuário (e-mail) já Cadastrado!', HttpStatus.BAD_REQUEST);
+
+    return await this.usuarioRepository.save(usuario);
+    }
+
+    async delete(id: number): Promise<string> {
+        await this.findById(id);
+        await this.usuarioRepository.delete(id);
+
+        return `O usuário com o ID ${id} foi deletado com sucesso!`; // lembrar dessa jossa aparecer no insomnia
     }
 }
