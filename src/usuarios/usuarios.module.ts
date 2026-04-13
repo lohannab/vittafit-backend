@@ -9,6 +9,6 @@ import { UsuarioController } from './controller/usuarios.controller';
   forwardRef(() => UsuarioModule)],
   providers: [UsuarioService],
   controllers: [UsuarioController],
-  exports: [UsuarioService],
+  exports: [UsuarioService, TypeOrmModule],
 })
 export class UsuarioModule {}
