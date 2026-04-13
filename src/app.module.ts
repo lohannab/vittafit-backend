@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Treino } from './treinos/entities/treinos.entity';
 import { TreinoModule } from './treinos/treinos.module';
 
+import { Usuario } from './usuarios/entities/usuarios.entity';
+import { UsuarioModule } from './usuarios/usuarios.module';
 
 @Module({
   imports: [
@@ -17,6 +19,11 @@ import { TreinoModule } from './treinos/treinos.module';
       synchronize: true
     }),
     TreinoModule
+      database: 'db_vittafit', // nome do banco de dados
+      entities: [Usuario],
+      synchronize: true
+    }),
+    UsuarioModule,
   ],
 })
 export class AppModule { }
