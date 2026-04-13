@@ -30,5 +30,7 @@ export class UsuarioController{
     async update(@Body() usuario: Usuario): Promise<Usuario>{
         return this.usuarioService.update(usuario)
     }
+
+    
  
 }

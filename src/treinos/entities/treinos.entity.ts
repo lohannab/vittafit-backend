@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 
 @Entity({ name: "tb_treinos" })
-export class Treino {
+export class Treinos {
 
     @PrimaryGeneratedColumn()
     id!: number;

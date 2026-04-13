@@ -22,6 +22,7 @@ export class Objetivos {
     @IsNotEmpty()
     @Column({ type: "date" }) 
     data_limite!: Date; // data limite do projeto
+    usuario: any;
 
     //@ManyToOne(() => Usuario, (usuario) => usuario.objetivos) // 
     //usuario!: Usuario;  // relacionamento com o usuário

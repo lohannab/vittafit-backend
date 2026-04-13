@@ -1,6 +1,9 @@
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator"
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
- 
+import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Objetivos } from "../../objetivos/entities/objetivos.entity";
+import { Dieta } from "../../dieta/entities/dieta.entity";
+import { Treinos } from "../../treinos/entities/treinos.entity";
+
 @Entity({name: "tb_usuarios"})
 export class Usuario {
  
@@ -39,9 +42,9 @@ export class Usuario {
     @OneToMany(() => Objetivos, (objetivos) => objetivos.usuario)
      objetivos!: Objetivos[];
 
-     @OneToMany(() => Dieta, (dieta) => dieta.usuario)
+    @OneToMany(() => Dieta, (dieta) => dieta.usuario)
     dieta!: Dieta[];
-    
+
     @OneToMany(() => Treinos, (treinos) => treinos.usuario)
-    treinos!: Treinos[];
+    treinos!: Treinos;
 }
