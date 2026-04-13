@@ -13,7 +13,7 @@ export class ObjetivosService {
 
     async findAll(): Promise<Objetivos[]> {
         return this.objetivosRepository.find({
-            relations: ['usuario']
+            relations: ['usuarios']
         });
     }
 
