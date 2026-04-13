@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, UpdateDateColumn } from "typeorm";
-import { Usuario } from "../../usuario/entities/usuario.entity";
 import { IsNotEmpty } from "class-validator";
+import { Usuario } from "../../usuarios/entities/usuarios.entity";
 
 @Entity({ name: "tb_dietas" })
 export class Dieta {
@@ -24,9 +24,9 @@ export class Dieta {
     @UpdateDateColumn()
     data!: Date;
 
-    @ManyToOne(() => Usuario, (usuario) => usuario.dietas, {
+    @ManyToOne(() => Usuario, (usuario) => usuario.dieta, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "usuario_id" })
-    usuario: Usuario;
+    usuario!: Usuario;
 }
