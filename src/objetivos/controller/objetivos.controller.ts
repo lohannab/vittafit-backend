@@ -18,7 +18,7 @@ export class ObjetivosController {
         return this.objetivosService.findById(id);
     }
 
-    @Post() // http://localhost:4000/Objetivos
+    @Post('/cadastrar') // http://localhost:4000/Objetivos/cadastrar
     @HttpCode(HttpStatus.OK)
     create(@Body() objetivos: Objetivos) {
     return this.objetivosService.create(objetivos);

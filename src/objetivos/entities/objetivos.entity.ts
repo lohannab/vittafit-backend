@@ -17,14 +17,15 @@ export class Objetivos {
     peso_objetivo!: number; // objetivo de peso
 
     @IsNotEmpty()
-    @Column({ type: "date" })
+    @Column({ type: "date", nullable:true })
     data_inicio!: Date; // data de inicio do projeto
 
     @IsNotEmpty()
-    @Column({ type: "date" }) 
+    @Column({ type: "date", nullable:true }) 
     data_limite!: Date; // data limite do projeto
-    usuario: any;
 
+
+    @IsNotEmpty()
     @ManyToOne(() => Usuario, (usuario) => usuario.objetivos) // 
     usuarios!: Usuario;  // relacionamento com o usuário
     }

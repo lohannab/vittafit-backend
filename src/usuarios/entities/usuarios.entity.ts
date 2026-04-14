@@ -32,13 +32,17 @@ export class Usuario {
 
     @IsNotEmpty()
     @Column('decimal', { precision: 10, scale: 2 })
-    peso!: number
-
-    
+    peso!: number   
    
+    @Column({
+    type: 'decimal',  precision: 10, scale: 1 ,
+    asExpression: 'peso / (altura * altura)',
+    generatedType: 'STORED'
+    })
     imc!: number;
+
  
-    @OneToMany(() => Objetivos, (objetivos) => objetivos.usuario)
+    @OneToMany(() => Objetivos, (objetivos) => objetivos.usuarios)
      objetivos!: Objetivos[];
 
     @OneToMany(() => Dieta, (dieta) => dieta.usuario)
@@ -47,7 +51,4 @@ export class Usuario {
     @OneToMany(() => Treinos, (treinos) => treinos.usuario)
     treino!: Treinos[];
 
-
-    @OneToMany(() => Treinos, (treinos) => treinos.usuario)
-    treinos!: Treinos;
 }

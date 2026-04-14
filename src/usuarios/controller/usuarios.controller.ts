@@ -31,10 +31,11 @@ export class UsuarioController{
         return this.usuarioService.update(usuario)
     }
 
-    @Delete('/:id')
-    @HttpCode(HttpStatus.NO_CONTENT)
-    delete(@Param('id', ParseIntPipe) id: number){
-        return this.usuarioService.delete(id);
+    @Delete('/:id') 
+    @HttpCode(HttpStatus.OK)
+    async delete(@Param('id', ParseIntPipe) id: number) { // deletar
+        await this.usuarioService.delete(id);
+        return { message: 'Deletado com sucesso' };
     }
     
  

@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Column, Repository } from 'typeorm';
 import { Usuario } from '../entities/usuarios.entity';
 
 @Injectable()
@@ -45,22 +45,22 @@ export class UsuarioService {
         return "Obesidade grau III";
     }
 
-    async create(usuario: Usuario): Promise<any> {
+    async create(usuario: Usuario): Promise<any> { 
         const buscaUsuario = await this.findByUsuario(usuario.usuario);
 
         if (buscaUsuario)
             throw new HttpException("O Usuario já existe!", HttpStatus.BAD_REQUEST);
-
+/* 
         const savedUser = await this.usuarioRepository.save(usuario);
 
-        const imc = this.calcularIMC(savedUser.peso, savedUser.altura);
+        const imc = this.calcularIMC(usuario.peso, usuario.altura);
         const classificacao = this.classificarIMC(imc);
 
         return {
             usuario: savedUser,
             imc: Number(imc.toFixed(2)),
             classificacao
-        };
+        }; */
     }
 
     async update(usuario: Usuario): Promise<Usuario> {
@@ -79,10 +79,19 @@ export class UsuarioService {
     return await this.usuarioRepository.save(usuario);
     }
 
-    async delete(id: number): Promise<string> {
+    async delete(id: number): Promise<{ message: string }> {
+            await this.findById(id);
+
+            await this.usuarioRepository.delete(id);
+
+            return { message: 'Deletado com sucesso' };
+    }
+
+
+/*     async delete(id: number): Promise<string> { 
         await this.findById(id);
         await this.usuarioRepository.delete(id);
 
         return `O usuário com o ID ${id} foi deletado com sucesso!`; // lembrar dessa jossa aparecer no insomnia
-    }
+    } */
 }

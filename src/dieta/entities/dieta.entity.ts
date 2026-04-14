@@ -8,9 +8,12 @@ export class Dieta {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    // @IsNotEmpty()
-    // @Column({ type: "decimal", precision: 5, scale: 2 })
-     imc!: number;
+    @Column({
+    type: 'decimal',  precision: 10, scale: 1 ,
+    asExpression: 'peso / (altura * altura)',
+    generatedType: 'STORED'
+    })
+    imc!: number;
 
     @IsNotEmpty()
     @Column()

@@ -24,7 +24,7 @@ export class DietaService {
     });
 
     if (!dieta) {
-      throw new HttpException('Dieta não encontrada!', HttpStatus.NOT_FOUND);
+      throw new HttpException('Dieta não encontrada!xd', HttpStatus.NOT_FOUND);// 
     }
 
     return dieta;
@@ -46,26 +46,22 @@ export class DietaService {
   }
 
   async create(dieta: Dieta): Promise<Dieta> {
-        const buscaDieta = await this.findById(dieta.id);
-
-      if (buscaDieta)
-        throw new HttpException("A dieta já existe!", HttpStatus.BAD_REQUEST);     
-
 
       if (!dieta.usuario || !dieta.usuario.id) {
           throw new HttpException("ID do Usuário é obrigatório", HttpStatus.BAD_REQUEST);
       }
 
+      if(dieta.id) {
+        throw new HttpException("Não envie ID no create", HttpStatus.BAD_REQUEST);
+      }
+
       const usuario = await this.usuarioRepository.findOne({
           where: { id: dieta.usuario.id }
-      });
-
-      
+      });   
 
       if (!usuario) {
           throw new HttpException("Usuário não encontrado", HttpStatus.NOT_FOUND);
       }
-
 
       dieta.imc = usuario.imc;
 

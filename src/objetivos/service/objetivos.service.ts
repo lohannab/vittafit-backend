@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Objetivos } from "../entities/objetivos.entity";
 import { Repository } from "typeorm";
@@ -26,7 +26,7 @@ export class ObjetivosService {
 
     async create(Objetivos: Objetivos): Promise<Objetivos> {
           if (Objetivos.data_limite < Objetivos.data_inicio) {
-    throw new Error("A data limite não pode ser menor que a data de início");
+    throw new HttpException("A data limite não pode ser menor que a data de início", HttpStatus.NOT_FOUND);
   }
         return this.objetivosRepository.save(Objetivos);
     }
