@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 import { Usuario } from "../../usuarios/entities/usuarios.entity";
 
 @Entity({ name: "tb_treinos" })
@@ -14,11 +14,14 @@ export class Treinos {
     descricao!: string;
 
     @Column({ type: "date" })
-    data!: string;
+    data!: Date;
 
     @Column()
     intensidade!: string;
 
-    @ManyToOne(() => Usuario, (usuario) => usuario.objetivos) // 
-    usuario!: Usuario;  // relacionamento com o usuário
+    @ManyToOne(() => Usuario, (usuario) => usuario.treinos, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "usuario_id" })
+    usuario!: Usuario;
 }

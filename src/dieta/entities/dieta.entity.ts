@@ -8,12 +8,10 @@ export class Dieta {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({
-    type: 'decimal',  precision: 10, scale: 1 ,
-    asExpression: 'peso / (altura * altura)',
-    generatedType: 'STORED'
-    })
-    imc!: number;
+
+    @Column("decimal", { precision: 5, scale: 2, nullable: true })
+    imc?: number;
+
 
     @IsNotEmpty()
     @Column()
@@ -26,7 +24,7 @@ export class Dieta {
     @UpdateDateColumn()
     data!: Date;
 
-    @ManyToOne(() => Usuario, (usuario) => usuario.dieta, {
+    @ManyToOne(() => Usuario, (usuario) => usuario.dietas, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "usuario_id" })

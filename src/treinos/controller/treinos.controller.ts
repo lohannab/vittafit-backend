@@ -1,35 +1,48 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put
+} from "@nestjs/common";
 import { TreinoService } from "../service/treinos.service";
 import { Treinos } from "../entities/treinos.entity";
 
 
-@Controller("/treinos")
+@Controller("treinos")
+
 export class TreinoController {
 
     constructor(private readonly treinoService: TreinoService) {}
 
-    @Post()
-    create(@Body() data: Partial<Treinos>) {
-        return this.treinoService.create(data);
-    }
-
     @Get()
-    findAll() {
+    findAll(): Promise<Treinos[]> {
         return this.treinoService.findAll();
     }
 
     @Get(":id")
-    findOne(@Param("id") id: number) {
-        return this.treinoService.findOne(Number(id));
+    findOne(@Param("id", ParseIntPipe) id: number): Promise<Treinos> {
+        return this.treinoService.findOne(id);
+    }
+
+    @Post()
+    create(@Body() data: Treinos): Promise<Treinos> {
+        return this.treinoService.create(data);
     }
 
     @Put(":id")
-    update(@Param("id") id: number, @Body() data: Partial<Treinos>) {
-        return this.treinoService.update(Number(id), data);
+    update(
+        @Param("id", ParseIntPipe) id: number,
+        @Body() data: Treinos
+    ): Promise<Treinos> {
+        return this.treinoService.update(id, data);
     }
 
     @Delete(":id")
-    remove(@Param("id") id: number) {
-        return this.treinoService.remove(Number(id));
+    remove(@Param("id", ParseIntPipe) id: number): Promise<void> {
+        return this.treinoService.remove(id);
     }
 }

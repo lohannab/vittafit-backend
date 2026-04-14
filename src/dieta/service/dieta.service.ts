@@ -1,9 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { DeleteResult, ILike, Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 import { Dieta } from "../entities/dieta.entity";
 import { Usuario } from "../../usuarios/entities/usuarios.entity";
-
 
 @Injectable()
 export class DietaService {
@@ -17,47 +16,49 @@ export class DietaService {
     private usuarioRepository: Repository<Usuario>,
   ) {}
 
+  async findAll(): Promise<Dieta[]> {
+    return this.dietaRepository.find({
+      relations: ["usuario"]
+    });
+  }
+
   async findById(id: number): Promise<Dieta> {
     const dieta = await this.dietaRepository.findOne({
       where: { id },
-      relations: { usuario: true }
+      relations: ["usuario"]
     });
 
     if (!dieta) {
-      throw new HttpException('Dieta não encontrada!xd', HttpStatus.NOT_FOUND);// 
+
+      throw new HttpException("Dieta não encontrada!", HttpStatus.NOT_FOUND);
     }
 
     return dieta;
   }
 
-  async findAll(): Promise<Dieta[]> {
-    return this.dietaRepository.find({
-      relations: { usuario: true }
-    });
-  }
-
-  async findAllByDescricao(descricao: string): Promise<Dieta[]> {
+  async findByDescricao(descricao: string): Promise<Dieta[]> {
     return this.dietaRepository.find({
       where: {
         descricao: ILike(`%${descricao}%`)
       },
-      relations: { usuario: true }
+      relations: ["usuario"]
     });
   }
 
   async create(dieta: Dieta): Promise<Dieta> {
 
-      if (!dieta.usuario || !dieta.usuario.id) {
-          throw new HttpException("ID do Usuário é obrigatório", HttpStatus.BAD_REQUEST);
-      }
 
-      if(dieta.id) {
-        throw new HttpException("Não envie ID no create", HttpStatus.BAD_REQUEST);
-      }
+    const usuario = await this.usuarioRepository.findOne({
+      where: { id: dieta.usuario?.id }
+    });
 
-      const usuario = await this.usuarioRepository.findOne({
-          where: { id: dieta.usuario.id }
-      });   
+    if (!usuario) {
+      throw new HttpException("Usuário não encontrado!", HttpStatus.NOT_FOUND);
+    }
+
+    dieta.usuario = usuario;
+    dieta.imc = usuario.imc;
+
 
       if (!usuario) {
           throw new HttpException("Usuário não encontrado", HttpStatus.NOT_FOUND);
@@ -68,18 +69,15 @@ export class DietaService {
       return await this.dietaRepository.save(dieta);
   }
 
-  async update(id: number, dados: any): Promise<Dieta> {
+  async update(id: number, dados: Dieta): Promise<Dieta> {
     const dieta = await this.findById(id);
 
-    if (dados.tipo !== undefined) dieta.tipo = dados.tipo;
-    if (dados.descricao !== undefined) dieta.descricao = dados.descricao;
-    if (dados.data !== undefined) dieta.data = dados.data;
-
-    return this.dietaRepository.save(dieta);
+    const atualizado = this.dietaRepository.merge(dieta, dados);
+    return this.dietaRepository.save(atualizado);
   }
 
-  async delete(id: number): Promise<DeleteResult> {
-    await this.findById(id);
-    return this.dietaRepository.delete(id);
+  async delete(id: number): Promise<void> {
+    const dieta = await this.findById(id);
+    await this.dietaRepository.remove(dieta);
   }
 }

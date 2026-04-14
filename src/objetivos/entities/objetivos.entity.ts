@@ -2,30 +2,32 @@ import { IsNotEmpty } from "class-validator";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from "../../usuarios/entities/usuarios.entity";
 
-@Entity({name: "tb_objetivos"})
+@Entity({ name: "tb_objetivos" })
 export class Objetivos {
 
     @PrimaryGeneratedColumn()
-    id!: number; // primary key
+    id!: number;
 
     @IsNotEmpty()
     @Column({ length: 255 })
-    descricao!: string; // descrição do objetivo
+    descricao!: string;
 
     @IsNotEmpty()
     @Column("decimal", { precision: 5, scale: 2 })
-    peso_objetivo!: number; // objetivo de peso
+    peso_objetivo!: number;
 
     @IsNotEmpty()
-    @Column({ type: "date", nullable:true })
-    data_inicio!: Date; // data de inicio do projeto
+
+    @Column({ type: "date" })
+    data_inicio!: Date;
 
     @IsNotEmpty()
-    @Column({ type: "date", nullable:true }) 
-    data_limite!: Date; // data limite do projeto
+    @Column({ type: "date" })
+    data_limite!: Date;
 
+    @ManyToOne(() => Usuario, (usuario) => usuario.objetivos, {
+        onDelete: "CASCADE"
+    })
+    usuario!: Usuario;
+}
 
-    @IsNotEmpty()
-    @ManyToOne(() => Usuario, (usuario) => usuario.objetivos) // 
-    usuarios!: Usuario;  // relacionamento com o usuário
-    }
