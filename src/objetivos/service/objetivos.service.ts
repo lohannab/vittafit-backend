@@ -1,4 +1,7 @@
+
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+
+
 import { InjectRepository } from "@nestjs/typeorm";
 import { Objetivos } from "../entities/objetivos.entity";
 import { Repository } from "typeorm";
@@ -13,7 +16,9 @@ export class ObjetivosService {
 
     async findAll(): Promise<Objetivos[]> {
         return this.objetivosRepository.find({
+
             relations: ["usuario"]
+
         });
     }
 
@@ -23,11 +28,13 @@ export class ObjetivosService {
             relations: ["usuario"]
         });
 
+
         if (!objetivo) {
             throw new NotFoundException("Objetivo não encontrado!");
         }
 
         return objetivo;
+
     }
 
     async create(objetivo: Objetivos): Promise<Objetivos> {

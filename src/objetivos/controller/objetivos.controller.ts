@@ -26,9 +26,11 @@ export class ObjetivosController {
         return this.objetivosService.findById(id);
     }
 
+
     @Post()
     create(@Body() objetivo: Objetivos): Promise<Objetivos> {
         return this.objetivosService.create(objetivo);
+
     }
 
     @Put("/:id")

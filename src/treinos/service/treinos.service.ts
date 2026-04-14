@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Treinos } from '../entities/treinos.entity';
@@ -7,6 +7,7 @@ import { InjectRepository as InjectRepoUsuario } from '@nestjs/typeorm';
 
 @Injectable()
 export class TreinoService {
+
 
   constructor(
     @InjectRepository(Treinos)
@@ -29,7 +30,9 @@ export class TreinoService {
     data.usuario = usuario;
 
     return this.treinoRepository.save(data);
+
   }
+
 
   async findAll(): Promise<Treinos[]> {
     return this.treinoRepository.find({

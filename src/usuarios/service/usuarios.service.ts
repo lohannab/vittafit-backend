@@ -1,7 +1,9 @@
+
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Usuario } from "../entities/usuarios.entity";
+
 
 @Injectable()
 export class UsuarioService {
@@ -33,6 +35,7 @@ export class UsuarioService {
         return usuario;
     }
 
+
     async delete(id: number): Promise<void> {
         const usuario = await this.findById(id);
         await this.usuarioRepository.remove(usuario);
@@ -51,6 +54,7 @@ export class UsuarioService {
         if (imc < 40) return "Obesidade grau II";
         return "Obesidade grau III";
     }
+
 
     async create(usuario: Usuario) {
         const existe = await this.findByUsuario(usuario.usuario);
@@ -85,5 +89,15 @@ export class UsuarioService {
 
         const atualizado = this.usuarioRepository.merge(existente, usuario);
         return this.usuarioRepository.save(atualizado);
+
+  
     }
+
+
+/*     async delete(id: number): Promise<string> { 
+        await this.findById(id);
+        await this.usuarioRepository.delete(id);
+
+        return `O usuário com o ID ${id} foi deletado com sucesso!`; // lembrar dessa jossa aparecer no insomnia
+    } */
 }

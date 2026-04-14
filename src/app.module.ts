@@ -17,11 +17,13 @@ import { TreinoModule } from './treinos/treinos.module';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
+
       username: 'root',
       password: 'root',
       database: 'db_vittafit',
       entities: [Usuario, Objetivos, Dieta, Treinos],
       synchronize: true
+
     }),
 
     UsuarioModule,

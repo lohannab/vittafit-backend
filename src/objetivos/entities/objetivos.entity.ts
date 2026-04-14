@@ -17,6 +17,7 @@ export class Objetivos {
     peso_objetivo!: number;
 
     @IsNotEmpty()
+
     @Column({ type: "date" })
     data_inicio!: Date;
 
@@ -29,3 +30,4 @@ export class Objetivos {
     })
     usuario!: Usuario;
 }
+

@@ -11,7 +11,9 @@ import {
 import { TreinoService } from "../service/treinos.service";
 import { Treinos } from "../entities/treinos.entity";
 
+
 @Controller("treinos")
+
 export class TreinoController {
 
     constructor(private readonly treinoService: TreinoService) {}

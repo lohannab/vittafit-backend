@@ -6,6 +6,7 @@ import { Usuario } from "../../usuarios/entities/usuarios.entity";
 
 @Injectable()
 export class DietaService {
+  usuarioService: any;
 
   constructor(
     @InjectRepository(Dieta)
@@ -28,6 +29,7 @@ export class DietaService {
     });
 
     if (!dieta) {
+
       throw new HttpException("Dieta não encontrada!", HttpStatus.NOT_FOUND);
     }
 
@@ -45,6 +47,7 @@ export class DietaService {
 
   async create(dieta: Dieta): Promise<Dieta> {
 
+
     const usuario = await this.usuarioRepository.findOne({
       where: { id: dieta.usuario?.id }
     });
@@ -56,7 +59,14 @@ export class DietaService {
     dieta.usuario = usuario;
     dieta.imc = usuario.imc;
 
-    return this.dietaRepository.save(dieta);
+
+      if (!usuario) {
+          throw new HttpException("Usuário não encontrado", HttpStatus.NOT_FOUND);
+      }
+
+      dieta.imc = usuario.imc;
+
+      return await this.dietaRepository.save(dieta);
   }
 
   async update(id: number, dados: Dieta): Promise<Dieta> {

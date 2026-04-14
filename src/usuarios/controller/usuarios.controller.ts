@@ -31,8 +31,10 @@ export class UsuarioController {
         return this.usuarioService.update(usuario);
     }
 
+
     @Delete("/:id")
     delete(@Param("id", ParseIntPipe) id: number): Promise<void> {
         return this.usuarioService.delete(id);
     }
+
 }

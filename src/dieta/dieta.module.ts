@@ -9,6 +9,7 @@ import { Usuario } from "../usuarios/entities/usuarios.entity";
     imports: [
         TypeOrmModule.forFeature([Dieta, Usuario])
     ],
+
     providers: [DietaService],
     controllers: [DietaController],
     exports: [DietaService]
