@@ -1,40 +1,46 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Post,
+    Put
+} from "@nestjs/common";
 import { ObjetivosService } from "../service/objetivos.service";
 import { Objetivos } from "../entities/objetivos.entity";
 
-@Controller("/Objetivos")
+@Controller("/objetivos")
 export class ObjetivosController {
 
     constructor(private readonly objetivosService: ObjetivosService) {}
 
-    @Get() // http://localhost:4000/Objetivos
-    findAll() {
+    @Get()
+    findAll(): Promise<Objetivos[]> {
         return this.objetivosService.findAll();
     }
 
-    @Get('/:id') // http://localhost:4000/Objetivos/1
-    @HttpCode(HttpStatus.OK)
-    findById(@Param('id', ParseIntPipe) id: number) {
+    @Get("/:id")
+    findById(@Param("id", ParseIntPipe) id: number): Promise<Objetivos> {
         return this.objetivosService.findById(id);
     }
 
-    @Post() // http://localhost:4000/Objetivos
-    @HttpCode(HttpStatus.OK)
-    create(@Body() objetivos: Objetivos) {
-    return this.objetivosService.create(objetivos);
+    @Post()
+    create(@Body() objetivo: Objetivos): Promise<Objetivos> {
+        return this.objetivosService.create(objetivo);
     }
 
-    @Put('/:id')
-    @HttpCode(HttpStatus.OK)
-    update(@Param('id', ParseIntPipe) id: number,
-    @Body() objetivos: Objetivos): Promise<Objetivos> {
-        return this.objetivosService.update(id, objetivos);
+    @Put("/:id")
+    update(
+        @Param("id", ParseIntPipe) id: number,
+        @Body() objetivo: Objetivos
+    ): Promise<Objetivos> {
+        return this.objetivosService.update(id, objetivo);
     }
 
-    @Delete('/:id') //ex: http://localhost:4000/loja/(id)
-    @HttpCode(HttpStatus.OK)
-    delete(@Param('id', ParseIntPipe) id: number){ // deletar
+    @Delete("/:id")
+    delete(@Param("id", ParseIntPipe) id: number): Promise<void> {
         return this.objetivosService.delete(id);
     }
-    
 }

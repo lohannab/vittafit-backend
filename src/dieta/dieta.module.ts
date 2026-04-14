@@ -4,14 +4,13 @@ import { Dieta } from "./entities/dieta.entity";
 import { DietaService } from "./service/dieta.service";
 import { DietaController } from "./controller/dieta.controller";
 import { Usuario } from "../usuarios/entities/usuarios.entity";
-import { UsuarioModule } from "../usuarios/usuarios.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Dieta]),
-    UsuarioModule
-],
+    imports: [
+        TypeOrmModule.forFeature([Dieta, Usuario])
+    ],
     providers: [DietaService],
     controllers: [DietaController],
     exports: [DietaService]
 })
-export class DietaModule {} 
+export class DietaModule {}
