@@ -2,12 +2,10 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { Usuario } from './usuarios/entities/usuarios.entity';
-import { Objetivos } from './objetivos/entities/objetivos.entity';
+import { Usuario } from './usuarios/entities/usuarios.entity';;
 import { Dieta } from './dieta/entities/dieta.entity';
 import { Treinos } from './treinos/entities/treinos.entity';
 import { UsuarioModule } from './usuarios/usuarios.module';
-import { ObjetivosModule } from './objetivos/objetivos.module';
 import { DietaModule } from './dieta/dieta.module';
 import { TreinoModule } from './treinos/treinos.module';
 
@@ -21,13 +19,12 @@ import { TreinoModule } from './treinos/treinos.module';
       username: 'root',
       password: 'root',
       database: 'db_vittafit',
-      entities: [Usuario, Objetivos, Dieta, Treinos],
+      entities: [Usuario, Dieta, Treinos],
       synchronize: true
 
     }),
 
     UsuarioModule,
-    ObjetivosModule,
     DietaModule,
     TreinoModule
   ],

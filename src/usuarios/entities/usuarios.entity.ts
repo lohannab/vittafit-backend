@@ -1,6 +1,5 @@
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Objetivos } from "../../objetivos/entities/objetivos.entity";
 import { Dieta } from "../../dieta/entities/dieta.entity";
 import { Treinos } from "../../treinos/entities/treinos.entity";
 
@@ -38,11 +37,6 @@ export class Usuario {
 
     @Column({ type: "decimal", precision: 10, scale: 2, nullable: true })
     imc!: number;
-
-
-    @OneToMany(() => Objetivos, (objetivo) => objetivo.usuario)
-    objetivos!: Objetivos[];
-
 
     @OneToMany(() => Dieta, (dieta) => dieta.usuario)
     dietas!: Dieta[];
