@@ -17,7 +17,7 @@ import { TreinoModule } from './treinos/treinos.module';
       port: 3306,
 
       username: 'root',
-      password: 'root',
+      password: '1234',
       database: 'db_vittafit',
       entities: [Usuario, Dieta, Treinos],
       synchronize: true
