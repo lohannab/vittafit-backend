@@ -19,6 +19,7 @@ export class AppService {
                   padding: 0;
               }
 
+            
               body {
                   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
                   background-color: #053227;
