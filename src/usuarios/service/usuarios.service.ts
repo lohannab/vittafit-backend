@@ -1,16 +1,14 @@
-
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Usuario } from "../entities/usuarios.entity";
-
 
 @Injectable()
 export class UsuarioService {
 
     constructor(
         @InjectRepository(Usuario)
-        private usuarioRepository: Repository<Usuario>
+        private readonly usuarioRepository: Repository<Usuario>
     ) {}
 
     async findByUsuario(usuario: string): Promise<Usuario | null> {
@@ -35,12 +33,10 @@ export class UsuarioService {
         return usuario;
     }
 
-
     async delete(id: number): Promise<void> {
         const usuario = await this.findById(id);
         await this.usuarioRepository.remove(usuario);
     }
-
 
     private calcularIMC(peso: number, altura: number): number {
         return peso / (altura * altura);
@@ -54,7 +50,6 @@ export class UsuarioService {
         if (imc < 40) return "Obesidade grau II";
         return "Obesidade grau III";
     }
-
 
     async create(usuario: Usuario) {
         const existe = await this.findByUsuario(usuario.usuario);
@@ -75,29 +70,24 @@ export class UsuarioService {
     }
 
     async update(usuario: Usuario): Promise<Usuario> {
+        if (!usuario.id) {
+            throw new HttpException("O ID do usuário é obrigatório para atualização!", HttpStatus.BAD_REQUEST);
+        }
+
         const existente = await this.findById(usuario.id);
 
-        const emailExistente = await this.findByUsuario(usuario.usuario);
-        if (emailExistente && emailExistente.id !== usuario.id) {
-            throw new HttpException("Usuário já cadastrado!", HttpStatus.BAD_REQUEST);
+        if (usuario.usuario) {
+            const emailExistente = await this.findByUsuario(usuario.usuario);
+            if (emailExistente && emailExistente.id !== usuario.id) {
+                throw new HttpException("Este e-mail de usuário já está cadastrado em outra conta!", HttpStatus.BAD_REQUEST);
+            }
         }
 
-        if (usuario.peso && usuario.altura) {
-            const imc = this.calcularIMC(usuario.peso, usuario.altura);
-            usuario.imc = Number(imc.toFixed(2));
-        }
+        const dadosMesclados = this.usuarioRepository.merge(existente, usuario);
 
-        const atualizado = this.usuarioRepository.merge(existente, usuario);
-        return this.usuarioRepository.save(atualizado);
+        const imc = this.calcularIMC(dadosMesclados.peso, dadosMesclados.altura);
+        dadosMesclados.imc = Number(imc.toFixed(2));
 
-  
+        return this.usuarioRepository.save(dadosMesclados);
     }
-
-
-/*     async delete(id: number): Promise<string> { 
-        await this.findById(id);
-        await this.usuarioRepository.delete(id);
-
-        return `O usuário com o ID ${id} foi deletado com sucesso!`; // lembrar dessa jossa aparecer no insomnia
-    } */
 }

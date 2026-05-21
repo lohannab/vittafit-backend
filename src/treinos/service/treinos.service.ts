@@ -3,24 +3,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Treinos } from '../entities/treinos.entity';
 import { Usuario } from '../../usuarios/entities/usuarios.entity';
-import { InjectRepository as InjectRepoUsuario } from '@nestjs/typeorm';
 
 @Injectable()
 export class TreinoService {
 
-
   constructor(
     @InjectRepository(Treinos)
-    private treinoRepository: Repository<Treinos>,
+    private readonly treinoRepository: Repository<Treinos>,
 
-    @InjectRepoUsuario(Usuario)
-    private usuarioRepository: Repository<Usuario>,
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>,
   ) {}
 
   async create(data: Treinos): Promise<Treinos> {
+    if (!data.usuario || !data.usuario.id) {
+      throw new BadRequestException("O ID do usuário é obrigatório para registrar um treino!");
+    }
 
     const usuario = await this.usuarioRepository.findOne({
-      where: { id: data.usuario?.id }
+      where: { id: data.usuario.id }
     });
 
     if (!usuario) {
@@ -30,9 +31,7 @@ export class TreinoService {
     data.usuario = usuario;
 
     return this.treinoRepository.save(data);
-
   }
-
 
   async findAll(): Promise<Treinos[]> {
     return this.treinoRepository.find({
