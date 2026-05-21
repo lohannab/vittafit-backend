@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger"; 
 import { IsEmail, IsNotEmpty, MinLength } from "class-validator";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import { Dieta } from "../../dieta/entities/dieta.entity";
-import { Treinos } from "../../treinos/entities/treinos.entity";
+import { Dieta } from "../../dieta/entities/dieta.entity"; // Verifique se o caminho está 100% certo
+import { Treinos } from "../../treinos/entities/treinos.entity"; // Verifique se o caminho está 100% certo
 
 @Entity({ name: "tb_usuarios" })
 export class Usuario {
@@ -45,9 +45,11 @@ export class Usuario {
     @Column({ type: "decimal", precision: 10, scale: 2, nullable: true })
     imc!: number;
 
+    @ApiProperty({ type: () => [Dieta], required: false }) 
     @OneToMany(() => Dieta, (dieta) => dieta.usuario)
     dietas!: Dieta[];
 
+    @ApiProperty({ type: () => [Treinos], required: false }) 
     @OneToMany(() => Treinos, (treino) => treino.usuario)
     treinos!: Treinos[];
 
