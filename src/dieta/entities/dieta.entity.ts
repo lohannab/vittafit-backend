@@ -28,6 +28,7 @@ export class Dieta {
     data!: Date;
 
     @ApiProperty({ 
+        type: () => Usuario,
         example: { id: 1 }, 
         description: "Objeto contendo o ID do usuário dono desta dieta" 
     })

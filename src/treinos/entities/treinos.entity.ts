@@ -25,6 +25,7 @@ export class Treinos {
     intensidade!: string;
 
     @ApiProperty({ 
+        type: () => Usuario,
         example: { id: 1 }, 
         description: "Objeto contendo o ID do usuário dono deste treino" 
     })
